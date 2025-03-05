@@ -1,11 +1,18 @@
 <script setup>
 import { TrashIcon } from "@heroicons/vue/24/outline";
-defineProps({
+
+const props = defineProps({
   post: {
     type: Object,
     required: true,
   },
 });
+
+const emit = defineEmits(["delete"]);
+
+function emitDelete() {
+  emit("delete", props.post.id);
+}
 </script>
 
 <template>
@@ -25,7 +32,7 @@ defineProps({
     <p>{{ post.content }}</p>
 
     <footer>
-      <button class="btn-icon">
+      <button class="btn-icon" @click="emitDelete">
         <TrashIcon />
       </button>
     </footer>

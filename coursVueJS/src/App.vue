@@ -27,6 +27,10 @@ function addPost() {
   posts.value.push(newPost);
   text.value = "";
 }
+
+function deletePost(postId) {
+  posts.value = posts.value.filter((post) => post.id !== postId); //ne garde que les posts qui ne sont pas celui sélectionné
+}
 </script>
 
 <template>
@@ -46,7 +50,12 @@ function addPost() {
 
       <h2 v-show="!posts.length">Il n'y a rien par ici...</h2>
 
-      <PostCard v-for="(post, index) in sortedPosts" :key="index" :post="post" />
+      <PostCard
+        v-for="(post, index) in sortedPosts"
+        :key="index"
+        :post="post"
+        @delete="deletePost"
+      />
     </div>
   </main>
 </template>
