@@ -19,6 +19,7 @@ function addPost() {
     id: Math.random().toString(36).substring(2), //UUID
     content: trimmedText.value,
     createdAt: new Date(),
+    liked: false,
     author: {
       username: "404azrael",
       avatarURL: "https://media1.tenor.com/m/NUzXmsZeSy8AAAAd/meme-edit.gif", //https://avatars.githubusercontent.com/u/130103824?v=4
@@ -30,6 +31,11 @@ function addPost() {
 
 function deletePost(postId) {
   posts.value = posts.value.filter((post) => post.id !== postId); //ne garde que les posts qui ne sont pas celui sélectionné
+}
+
+function likePost(postId) {
+  let liked = posts.value.find((post) => post.id == postId).liked;
+  posts.value.find((post) => post.id == postId).liked = !liked;
 }
 </script>
 
@@ -55,6 +61,7 @@ function deletePost(postId) {
         :key="index"
         :post="post"
         @delete="deletePost"
+        @like="likePost"
       />
     </div>
   </main>

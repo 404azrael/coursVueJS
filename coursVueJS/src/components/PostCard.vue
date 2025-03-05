@@ -1,5 +1,6 @@
 <script setup>
-import { TrashIcon } from "@heroicons/vue/24/outline";
+import { TrashIcon, HeartIcon } from "@heroicons/vue/24/outline";
+import { HeartIcon as iconLiked } from "@heroicons/vue/24/solid";
 
 const props = defineProps({
   post: {
@@ -8,10 +9,14 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["delete"]);
+const emit = defineEmits(["delete", "like"]);
 
 function emitDelete() {
   emit("delete", props.post.id);
+}
+
+function emitLike() {
+  emit("like", props.post.id);
 }
 </script>
 
@@ -32,6 +37,10 @@ function emitDelete() {
     <p>{{ post.content }}</p>
 
     <footer>
+      <button class="btn-icon" @click="emitLike">
+        <HeartIcon v-show="!post.liked" />
+        <iconLiked v-show="post.liked" />
+      </button>
       <button class="btn-icon" @click="emitDelete">
         <TrashIcon />
       </button>
