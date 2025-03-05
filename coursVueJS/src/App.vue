@@ -21,7 +21,7 @@ function addPost() {
     createdAt: new Date(),
     author: {
       username: "404azrael",
-      avatarURL: "https://avatars.githubusercontent.com/u/130103824?v=4",
+      avatarURL: "https://media1.tenor.com/m/NUzXmsZeSy8AAAAd/meme-edit.gif", //https://avatars.githubusercontent.com/u/130103824?v=4
     },
   };
   posts.value.push(newPost);
