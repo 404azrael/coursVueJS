@@ -1,5 +1,6 @@
 <script setup>
 import { ref, computed } from "vue";
+import PostCard from "@/components/PostCard.vue";
 
 const text = ref("");
 const trimmedText = computed(() => text.value.trim()); // à chaque fois que "text" est modifiée, la fonction fléchée ()=>text.value.trim() va être utilisée
@@ -19,7 +20,7 @@ function addPost() {
     content: trimmedText.value,
     createdAt: new Date(),
     author: {
-      username: "anonymous",
+      username: "404azrael",
       avatarURL: "https://avatars.githubusercontent.com/u/130103824?v=4",
     },
   };
@@ -43,85 +44,9 @@ function addPost() {
         <button type="submit" :disabled="!trimmedText">Poster</button>
       </form>
 
-      <p v-show="!posts.length">Il n'y a rien par ici...</p>
+      <h2 v-show="!posts.length">Il n'y a rien par ici...</h2>
 
-      <article v-for="(post, index) in sortedPosts" :key="index" class="card">
-        <header>
-          <img :src="post.author.avatarURL" :alt="post.author.username" width="36" height="36" />
-          <!--RENDU DECLARATIF-->
-          <a>{{ post.author.username }}</a>
-          <a>{{ post.createdAt }}</a>
-        </header>
-        <!--RENDU DECLARATIF-->
-        <p>{{ post.content }}</p>
-      </article>
+      <PostCard v-for="(post, index) in sortedPosts" :key="index" :post="post" />
     </div>
   </main>
 </template>
-
-<style scoped>
-.container {
-  height: 100vh;
-  margin: 0 auto;
-  max-width: 640px;
-}
-.card {
-  background-color: var(--color-bg-secondary);
-  border-radius: 10px;
-  border: 1px solid var(--color-border);
-  margin-bottom: 1rem;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-  margin-top: 1rem;
-  padding: 1rem 1.5rem;
-  width: 100%;
-}
-textarea {
-  background: none;
-  border: none;
-  color: var(--color-text-primary);
-  flex: 1;
-  margin-bottom: 1rem;
-  outline: none;
-  padding: 0.5rem 0;
-  resize: none;
-  field-sizing: content;
-}
-button {
-  align-self: flex-end;
-  background: none;
-  border-radius: 10px;
-  border: 1px solid var(--color-border);
-  color: var(--color-text-primary);
-  cursor: pointer;
-  font-size: 1rem;
-  height: 40px;
-  padding: 0 1rem;
-}
-button:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-article {
-  padding: 1rem;
-  overflow: hidden;
-}
-
-article p {
-  white-space: pre-wrap;
-}
-
-article header {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
-}
-
-article img {
-  border-radius: 50%;
-}
-</style>
