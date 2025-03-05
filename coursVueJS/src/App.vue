@@ -1,22 +1,60 @@
 <script setup>
-import { ref } from "vue";
-const text = ref("hello");
+import { ref, computed } from "vue";
+
+const text = ref("");
+const trimmedText = computed(() => text.value.trim()); // à chaque fois que "text" est modifiée, la fonction fléchée ()=>text.value.trim() va être utilisée
+
+// function updateText(event) {
+//   text.value = event.target.value;
+// }
+
 const posts = ref([]);
+const sortedPosts = computed(() =>
+  [...posts.value].sort((post1, post2) => post2.createdAt - post1.createdAt),
+);
 
 function addPost() {
-  posts.value.push(text.value);
+  const newPost = {
+    id: Math.random().toString(36).substring(2), //UUID
+    content: trimmedText.value,
+    createdAt: new Date(),
+    author: {
+      username: "anonymous",
+      avatarURL: "https://avatars.githubusercontent.com/u/130103824?v=4",
+    },
+  };
+  posts.value.push(newPost);
   text.value = "";
 }
 </script>
 
 <template>
+  <!--<h1>£( ° [______] ° )£</h1>-->
   <main>
     <div class="container">
       <form class="card" @submit.prevent="addPost">
         <textarea name="post" id="post" placeholder="Quoi de neuf ?" v-model="text"></textarea>
-        <button type="submit">Poster</button>
+        <!--DIRECTIVES avec leur équivalent en "sucre syntaxique"
+          - v-bind:{paramHTML} = lie le paramètre à une variable ou constante Javascript    (ex : v-bind:value)   =>  :
+          - v-on:{typeEvent} = écoute un événement sur une balise HTML    (ex : @input, @click)  =>  @
+          - v-model = binding bi-latéral (v-bind et v-on en même temps)
+          - v-for = permet de faire des foreach et des for
+        -->
+        <button type="submit" :disabled="!trimmedText">Poster</button>
       </form>
-      <p v-for="(post, index) in posts" :key="index">{{ post }}</p>
+
+      <p v-show="!posts.length">Il n'y a rien par ici...</p>
+
+      <article v-for="(post, index) in sortedPosts" :key="index" class="card">
+        <header>
+          <img :src="post.author.avatarURL" :alt="post.author.username" width="36" height="36" />
+          <!--RENDU DECLARATIF-->
+          <a>{{ post.author.username }}</a>
+          <a>{{ post.createdAt }}</a>
+        </header>
+        <!--RENDU DECLARATIF-->
+        <p>{{ post.content }}</p>
+      </article>
     </div>
   </main>
 </template>
@@ -62,5 +100,28 @@ button {
   font-size: 1rem;
   height: 40px;
   padding: 0 1rem;
+}
+button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+article {
+  padding: 1rem;
+  overflow: hidden;
+}
+
+article p {
+  white-space: pre-wrap;
+}
+
+article header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+article img {
+  border-radius: 50%;
 }
 </style>
