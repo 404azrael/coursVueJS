@@ -31,7 +31,7 @@ function goToUserProfile(){
   <article class="card">
     <header>
       <img
-        :src="post.author.avatarURL"
+        :src="post.author.avatarUrl"
         :alt="post.author.username"
         width="36"
         height="36"
