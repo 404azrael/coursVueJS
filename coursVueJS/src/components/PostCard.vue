@@ -38,8 +38,9 @@ function emitLike() {
 
     <footer>
       <button class="btn-icon" @click="emitLike">
-        <HeartIcon v-show="!post.liked" />
-        <iconLiked v-show="post.liked" />
+        <!--<HeartIcon v-if="!post.liked" />
+        <iconLiked v-else class="active"/>-->
+        <component :is="post.liked ? iconLiked : HeartIcon" :class="{active: post.liked}"/>
       </button>
       <button class="btn-icon" @click="emitDelete">
         <TrashIcon />

@@ -36,6 +36,9 @@ function deletePost(postId) {
 function likePost(postId) {
   let liked = posts.value.find((post) => post.id == postId).liked;
   posts.value.find((post) => post.id == postId).liked = !liked;
+
+  /*const postToUpdate = posts.value.find((post) => post.id == id);
+  postToUpdate.liked = !postToUpdate.liked*/
 }
 </script>
 
