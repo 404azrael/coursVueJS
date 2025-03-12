@@ -1,6 +1,9 @@
 <script setup>
 import { TrashIcon, HeartIcon } from "@heroicons/vue/24/outline";
 import { HeartIcon as iconLiked } from "@heroicons/vue/24/solid";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 const props = defineProps({
   post: {
@@ -18,6 +21,10 @@ function emitDelete() {
 function emitLike() {
   emit("like", props.post.id);
 }
+
+function goToUserProfile(){
+  router.push({name: "user", params: {username: props.post.author.username}})
+}
 </script>
 
 <template>
@@ -31,7 +38,7 @@ function emitLike() {
         class="avatar"
       />
       <!--RENDU DECLARATIF-->
-      <a>{{ post.author.username }}</a>
+      <a @click="goToUserProfile">{{ post.author.username }}</a>
     </header>
     <!--RENDU DECLARATIF-->
     <p>{{ post.content }}</p>
