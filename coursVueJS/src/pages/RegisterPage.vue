@@ -16,15 +16,23 @@ const isFormValid = computed(() => {
 const isLoading = ref(false);
 
 function register() {
-  isLoading.value = true;
-  console.log({
-    username: username.value,
-    email: email.value,
-    password: password.value,
-  });
-  setTimeout(() => {
-    router.push("/");
-  }, 1000);
+  fetch("https://posts-crud-api.vercel.app/register", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      username: username.value,
+      email: email.value,
+      password: password.value,
+    }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      localStorage.setItem("user", JSON.stringify(data));
+      router.push("/");
+    });
 }
 </script>
 
