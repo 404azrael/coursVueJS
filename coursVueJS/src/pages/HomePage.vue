@@ -42,12 +42,16 @@ function likePost(postId) {
 }
 
 const apiPosts = ref([]);
-function fetchPosts(){
-    const result = fetch("https://posts-crud-api.vercel.app/posts");
-    result.then((response) => response.json())
+const loading = ref(false);
+function fetchPosts() {
+  loading.value = true;
+  const result = fetch("https://posts-crud-api.vercel.app/posts");
+  result
+    .then((response) => response.json())
     .then((data) => {
-        apiPosts.value = data;
-    })
+      apiPosts.value = data;
+      loading.value = false;
+    });
 }
 fetchPosts();
 </script>
@@ -67,7 +71,8 @@ fetchPosts();
         <button type="submit" :disabled="!trimmedText">Poster</button>
       </form>
 
-      <h2 v-show="!apiPosts.length">Il n'y a rien par ici...</h2>
+      <h2 v-if="loading">Chargement...</h2>
+      <h2 v-else-if="!apiPosts.length">Il n'y a rien par ici...</h2>
 
       <PostCard
         v-for="(post, index) in apiPosts"
