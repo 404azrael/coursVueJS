@@ -26,4 +26,17 @@ const router = createRouter({
   history: createWebHistory(),
 });
 
+router.beforeEach((to, _, next) => {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user) {
+      next({ name: "register" });
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
+});
+
 export default router;

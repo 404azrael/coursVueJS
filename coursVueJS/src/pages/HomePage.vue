@@ -14,7 +14,7 @@ const sortedPosts = computed(() =>
   [...posts.value].sort((post1, post2) => post2.createdAt - post1.createdAt),
 );
 
-function addPost() {
+/*function addPost() {
   const newPost = {
     id: Math.random().toString(36).substring(2), //UUID
     content: trimmedText.value,
@@ -27,6 +27,33 @@ function addPost() {
   };
   posts.value.push(newPost);
   text.value = "";
+}*/
+
+function addPost() {
+  const userData = JSON.parse(localStorage.getItem("user"));
+  const token = userData.token;
+  fetch("https://posts-crud-api.vercel.app/posts", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ content: trimmedText.value }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      apiPosts.value.unshift({
+        id: data.id,
+        content: data.content,
+        createdAt: data.createdAt,
+        author: {
+          id: userData.user.id,
+          username: userData.user.username,
+          avatarUrl: userData.user.avatarUrl,
+        },
+      });
+      text.value = "";
+    });
 }
 
 function deletePost(postId) {
